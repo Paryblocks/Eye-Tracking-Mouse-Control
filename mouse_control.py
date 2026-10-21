@@ -2,12 +2,13 @@ import pyautogui
 
 # Deactivating the failsafe for free mouse use
 pyautogui.FAILSAFE = False
+pyautogui.PAUSE = 0
 
 class MouseController:
     def __init__(self):
-        self.EAR_THRESHOLD = 0.39 # Adjustable threshold for blink
-        self.CONSECUTIVE_FRAMES_CLICK = 3 # Frames to "click"
-        self.CONSECUTIVE_FRAMES_HOLD = 10 # Frames to "hold"
+        self.EAR_THRESHOLD = 0.5 # Adjustable threshold for blink
+        self.CONSECUTIVE_FRAMES_CLICK = 4 # Frames to "click"
+        self.CONSECUTIVE_FRAMES_HOLD = 10 #0Frames to "hold"
 
         # Condition flags
         self.closed_time = 0
@@ -16,12 +17,22 @@ class MouseController:
         # Getting screen size
         self.screen_width, self.screen_height = pyautogui.size()
 
-        # Filter for smoother movement
-        self.smoother = 5
-        self.history_x = []
-        self.history_y = []
+        # Estimated min-max values to be adjusted
+        self.x_min, self.x_max = 0.40, 0.65
+        self.y_min, self.y_max = 0.34, 0.49
 
-    def process_commands(self, left_eye, right_eye, points):
+        # Filter to avoid jitter
+        self.prev_screen_x, self.prev_screen_y = self.screen_width // 2, self.screen_height // 2
+        self.smoothing = 0.25
+
+    # Min-Max normalization function
+    def normalize(self, value, min_value, max_value):
+        if max_value <= min_value:
+            return 0.5
+        normalized = (value - min_value) / (max_value - min_value)
+        return max(0.0, min(1.0, normalized))
+
+    def process_commands(self, left_eye, right_eye, points, gaze_x, gaze_y):
         # Click and Hold Logic
         if left_eye < self.EAR_THRESHOLD:
             self.closed_time += 1
@@ -46,17 +57,23 @@ class MouseController:
             self.closed_time = 0
 
         # Mouse movement logic
+        if gaze_x is not None and gaze_y is not None:
+            # Normalizes both values
+            x_norm = self.normalize(gaze_x, self.x_min, self.x_max)
+            y_norm = self.normalize(gaze_y, self.y_min, self.y_max)
 
+            x_norm = 1.0 - x_norm
 
-            # Applying the filter for smoother mouse movement
-            self.history_x.append(x_screen)
-            self.history_y.append(y_screen)
-            if len(self.history_x) > self.smoother:
-                self.history_x.pop(0)
-                self.history_y.pop(0)
+            # Maps the screen to the values
+            screen_x = x_norm * (self.screen_width - 1)
+            screen_y = y_norm * (self.screen_height - 1)
 
-            x_smooth = sum(self.history_x) / len(self.history_x)
-            y_smooth = sum(self.history_y) / len(self.history_y)
+            # Smoothing to reduce jitter
+            smooth_x = self.prev_screen_x + (screen_x - self.prev_screen_x) * self.smoothing
+            smooth_y = self.prev_screen_y + (screen_y - self.prev_screen_y) * self.smoothing
 
             # Moves the cursor
-            pyautogui.moveTo(x_smooth, y_smooth)
+            pyautogui.moveTo(smooth_x, smooth_y)
+
+            # Saves current position for next cycle
+            self.prev_screen_x, self.prev_screen_y = smooth_x, smooth_y

@@ -53,3 +53,42 @@ class EyeTracker:
             return ear
         except:
             return 0.0
+
+    # Calculates the center of the iris for controlling the cursor
+    def get_gaze_position(self, points, eye_values, iris_indices):
+        # Center of the iris
+        iris_center = np.mean(points[iris_indices], axis=0)
+
+        # Eye corners
+        p1 = points[eye_values[0]]
+        p4 = points[eye_values[3]]
+
+        # Upper and lower eyelids
+        upper = np.mean([
+            points[eye_values[1]],
+            points[eye_values[2]]
+        ], axis=0)
+
+        lower = np.mean([
+            points[eye_values[4]],
+            points[eye_values[5]]
+        ], axis=0)
+
+        # Horizontal position relative to eye corners
+        left_corner_x = min(p1[0], p4[0])
+        eye_width = abs(p4[0] - p1[0])
+
+        if eye_width < 1:
+            return None
+
+        x_ratio = (iris_center[0] - left_corner_x) / eye_width
+
+        # Vertical position relative to eyelids
+        eye_height = lower[1] - upper[1]
+
+        if abs(eye_height) < 1:
+            return None
+
+        y_ratio = (iris_center[1] - upper[1]) / eye_height
+
+        return x_ratio, y_ratio
