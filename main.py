@@ -23,26 +23,28 @@ while True:
     if not confirmation:
         break
 
-    height, width, _ = frame.shape
-
     # Processes frame using the eye tracker class
     face_points = tracker.process_frame(frame)
 
-    features = tracker.get_gaze_features(face_points)
-
-    if features is not None:
-        print(
-            f"Olho 1: x={features[0]:.3f}, y={features[1]:.3f} | "
-            f"Olho 2: x={features[2]:.3f}, y={features[3]:.3f}"
-        )
-
-    if face_points is not None and len(face_points) > 468:
+    if face_points is not None and len(face_points) >= 478:
         # Gets the EAR for both eyes
         ear_left = tracker.get_ear(face_points, LEFT_EYE)
         ear_right = tracker.get_ear(face_points, RIGHT_EYE)
 
+        gaze_x = None
+        gaze_y = None
+
+        # Gets iris value for both eyes
+        gaze_left = tracker.get_gaze_position(face_points, LEFT_EYE, list(range(473, 478)))
+        gaze_right = tracker.get_gaze_position(face_points, RIGHT_EYE, list(range(468, 473)))
+
+        # Gets average gaze value
+        if gaze_left and gaze_right:
+            gaze_x = (gaze_left[0] + gaze_right[0]) / 2
+            gaze_y = (gaze_left[1] + gaze_right[1]) / 2
+
         # Processes movements and click
-        #mouse.process_commands(ear_left, ear_right, face_points)
+        mouse.process_commands(ear_left, ear_right, face_points, gaze_x, gaze_y)
 
         # Highlights eyes for testing
         for idx in LEFT_EYE + RIGHT_EYE:
