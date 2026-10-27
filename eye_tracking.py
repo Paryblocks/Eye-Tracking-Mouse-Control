@@ -89,6 +89,6 @@ class EyeTracker:
         if abs(eye_height) < 1:
             return None
 
-        y_ratio = (iris_center[1] - upper[1]) / eye_height
+        y_ratio = ((iris_center[1] - upper[1]) / eye_height) - 0.05
 
         return x_ratio, y_ratio
