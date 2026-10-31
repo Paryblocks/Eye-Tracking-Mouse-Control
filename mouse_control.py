@@ -21,6 +21,9 @@ class MouseController:
         self.x_min, self.x_max = 0.40, 0.65
         self.y_min, self.y_max = 0.34, 0.49
 
+        self.neutral_x = 0.50
+        self.neutral_y = 0.45
+
         # History of positions to get smoother movement
         self.x_history = []
         self.y_history = []
@@ -64,22 +67,34 @@ class MouseController:
 
             x_norm = 1.0 - x_norm
 
+            delta_x = x_norm - self.neutral_x
+            delta_y = y_norm - self.neutral_y
+
             # Maps the screen to the values
-            screen_x = x_norm * (self.screen_width - 1)
-            screen_y = y_norm * (self.screen_height - 1)
+            #screen_x = x_norm * (self.screen_width - 1)
+            #screen_y = y_norm * (self.screen_height - 1)
 
             # Saving the positions and getting the average to reduce jitter
-            self.x_history.append(screen_x)
-            self.y_history.append(screen_y)
+            #self.x_history.append(screen_x)
+            #self.y_history.append(screen_y)
 
             # Limits the number of the history
-            if len(self.x_history) > 40:
-                self.x_history.pop(0)
-                self.y_history.pop(0)
+            #if len(self.x_history) > 10:
+                #self.x_history.pop(0)
+                #self.y_history.pop(0)
+
+            if delta_x > 0 and delta_y > 0:
+                pyautogui.move(50, 50)
+            elif delta_x < 0 and delta_y > 0:
+                pyautogui.move(-50, 50)
+            elif delta_x > 0 and delta_y < 0:
+                pyautogui.move(50, -50)
+            elif delta_x < 0 and delta_y < 0:
+                pyautogui.move(-50, -50)
 
             # Smoothes out the coordinates based on the previous ones
-            smooth_x = sum(self.x_history) / len(self.x_history)
-            smooth_y = sum(self.y_history) / len(self.y_history)
+            #smooth_x = sum(self.x_history) / len(self.x_history)
+            #smooth_y = sum(self.y_history) / len(self.y_history)
 
             # Moves the cursor
-            pyautogui.moveTo(smooth_x, smooth_y)
+            #pyautogui.moveTo(smooth_x, smooth_y)
