@@ -39,12 +39,12 @@ while True:
         gaze_right = tracker.get_gaze_position(face_points, RIGHT_EYE, list(range(468, 473)))
 
         # Gets average gaze value
-        if gaze_left and gaze_right:
+        if gaze_left is not None and gaze_right is not None:
             gaze_x = (gaze_left[0] + gaze_right[0]) / 2
             gaze_y = (gaze_left[1] + gaze_right[1]) / 2
 
         # Processes movements and click
-        mouse.process_commands(ear_left, ear_right, face_points, gaze_x, gaze_y)
+        mouse.process_commands(ear_left, ear_right, gaze_x, gaze_y)
 
         # Highlights eyes for testing
         for idx in LEFT_EYE + RIGHT_EYE:
