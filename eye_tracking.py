@@ -64,15 +64,8 @@ class EyeTracker:
         p4 = points[eye_values[3]]
 
         # Upper and lower eyelids
-        upper = np.mean([
-            points[eye_values[1]],
-            points[eye_values[2]]
-        ], axis=0)
-
-        lower = np.mean([
-            points[eye_values[4]],
-            points[eye_values[5]]
-        ], axis=0)
+        upper = np.mean([points[eye_values[1]], points[eye_values[2]]], axis=0)
+        lower = np.mean([points[eye_values[4]], points[eye_values[5]]], axis=0)
 
         # Horizontal position relative to eye corners
         left_corner_x = min(p1[0], p4[0])

@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9773109b-7942-42a7-bf2a-640c36baa8ac" name="Changes" comment="Improved movement">
+      <change beforePath="$PROJECT_DIR$/.idea/ProjetoIA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ProjetoIA.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eye_tracking.py" beforeDir="false" afterPath="$PROJECT_DIR$/eye_tracking.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mouse_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/mouse_control.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,12 +32,12 @@
     &quot;assignee&quot;: &quot;Paryblocks&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Paryblocks/Eye-Tracking-Mouse-Control.git",
-    "accountId": "965f3cdf-3965-43ac-b9c9-1e70b8f9b5bc"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Paryblocks/Eye-Tracking-Mouse-Control.git&quot;,
+    &quot;accountId&quot;: &quot;965f3cdf-3965-43ac-b9c9-1e70b8f9b5bc&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
