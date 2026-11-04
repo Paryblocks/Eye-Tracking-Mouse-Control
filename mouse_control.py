@@ -5,7 +5,9 @@ pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
 
 class MouseController:
-    def __init__(self):
+    def __init__(self, keyboard = None):
+        self.keyboard = keyboard
+
         self.EAR_THRESHOLD = 0.41 # Adjustable threshold for blink
         self.CONSECUTIVE_FRAMES_CLICK = 6 # Frames to "click"
         self.CONSECUTIVE_FRAMES_HOLD = 13 # Frames to "hold"
@@ -14,6 +16,8 @@ class MouseController:
         self.closed_time_l = 0
         self.closed_time_r = 0
         self.holding_click = False
+
+        self.right_triggered = False
 
         # Estimated values to be adjusted
         self.x_min, self.x_neutral, self.x_max = 0.40, 0.50, 0.65
@@ -84,11 +88,20 @@ class MouseController:
 
         if right_closed:
             self.closed_time_r += 1
-            if self.closed_time_r >= self.CONSECUTIVE_FRAMES_CLICK:
-                # Opens virtual keyboard
-                pyautogui.hotkey('win', 'ctrl', 'o')
-                print("Right click")
-                self.closed_time_r = 0
+
+            if (
+                    self.closed_time_r >= self.CONSECUTIVE_FRAMES_CLICK
+                    and not self.right_triggered
+            ):
+                if self.keyboard is not None:
+                    self.keyboard.toggle()
+
+                print("Virtual keyboard toggled")
+                self.right_triggered = True
+
+        else:
+            self.closed_time_r = 0
+            self.right_triggered = False
 
         # Mouse movement logic
         if gaze_x is not None and gaze_y is not None:

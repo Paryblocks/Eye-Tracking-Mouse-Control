@@ -1,11 +1,13 @@
 import cv2 as cv
 from eye_tracking import EyeTracker
 from mouse_control import MouseController
+from virtual_keyboard import VirtualKeyboard
 
-# 0 means the default camera, changing it to 1 or so on will select any aditional cameras
+# 0 means the default camera, changing it to 1 or so on will select any additional cameras
 cap = cv.VideoCapture(0)
 tracker = EyeTracker()
-mouse = MouseController()
+keyboard = VirtualKeyboard()
+mouse = MouseController(keyboard)
 
 # Points representing the eyes according to Google Face Mesh
 LEFT_EYE = [362, 385, 387, 263, 373, 380]
@@ -45,6 +47,7 @@ while True:
 
         # Processes movements and click
         mouse.process_commands(ear_left, ear_right, gaze_x, gaze_y)
+        keyboard.update()
 
         # Highlights eyes for testing
         for idx in LEFT_EYE + RIGHT_EYE:
@@ -64,4 +67,5 @@ while True:
 
 # Closing everything at the end
 cap.release()
+keyboard.close()
 cv.destroyAllWindows()
