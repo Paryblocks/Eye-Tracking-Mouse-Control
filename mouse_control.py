@@ -8,8 +8,9 @@ class MouseController:
     def __init__(self, keyboard = None):
         self.keyboard = keyboard
 
-        self.EAR_THRESHOLD = 0.51 # Adjustable threshold for blink
-        self.CONSECUTIVE_FRAMES_CLICK = 6 # Frames to "click"
+        self.EAR_THRESHOLD = 0.40 # Adjustable threshold for blink
+        self.EAR_TOLERANCE = 0.02 # Since there are small changes to EAR each frame
+        self.CONSECUTIVE_FRAMES_CLICK = 4 # Frames to "click"
         self.CONSECUTIVE_FRAMES_HOLD = 13 # Frames to "hold"
 
         # Condition flags
@@ -59,8 +60,8 @@ class MouseController:
 
     def process_commands(self, left_eye, right_eye, gaze_x, gaze_y):
         # Checking for a one eye blink
-        left_closed = right_eye > left_eye < self.EAR_THRESHOLD
-        right_closed = left_eye > right_eye < self.EAR_THRESHOLD
+        left_closed = right_eye > left_eye - self.EAR_TOLERANCE < self.EAR_THRESHOLD or right_eye > left_eye + self.EAR_TOLERANCE< self.EAR_THRESHOLD
+        right_closed = left_eye > right_eye - self.EAR_TOLERANCE < self.EAR_THRESHOLD or left_eye > right_eye + self.EAR_TOLERANCE < self.EAR_THRESHOLD
 
         # Click and Hold Logic
         if left_closed:
@@ -101,7 +102,7 @@ class MouseController:
             self.right_triggered = False
 
         # Mouse movement logic
-        if gaze_x is not None and gaze_y is not None:
+        if gaze_x is not None and gaze_y is not None and not right_closed and not left_closed:
             # Normalizes both values
             x_norm = self.normalize(gaze_x, self.x_min, self.x_max)
             y_norm = self.normalize(gaze_y, self.y_min, self.y_max)
@@ -120,5 +121,5 @@ class MouseController:
             move_x = self.calculate_speed(delta_x, self.x_dead_zone)
             move_y = self.calculate_speed(delta_y, self.y_dead_zone)
 
-            #if move_x != 0 or move_y != 0:
-                #pyautogui.move(round(move_x), round(move_y))
+            if move_x != 0 or move_y != 0:
+                pyautogui.move(round(move_x), round(move_y))

@@ -8,8 +8,9 @@ class VirtualKeyboard:
         self.root = tk.Tk()
         self.root.title("Virtual Keyboard")
         # Window size, can be adjusted (Width, Height, X, Y)
-        self.root.geometry("760x300+100+500")
+        self.root.geometry("760x380+100+400")
         self.root.resizable(False, False)
+
         # Makes so that the window stays on top of other to allow typing
         self.root.attributes("-topmost", True)
 
@@ -65,6 +66,7 @@ class VirtualKeyboard:
                     text=char,
                     width=5,
                     height=2,
+                    takefocus=0,
                     # Calls function to type the char in the key
                     command=lambda key=char: self.type_key(key)
                 )
