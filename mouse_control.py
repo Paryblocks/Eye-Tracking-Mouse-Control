@@ -8,7 +8,7 @@ class MouseController:
     def __init__(self, keyboard = None):
         self.keyboard = keyboard
 
-        self.EAR_THRESHOLD = 0.41 # Adjustable threshold for blink
+        self.EAR_THRESHOLD = 0.51 # Adjustable threshold for blink
         self.CONSECUTIVE_FRAMES_CLICK = 6 # Frames to "click"
         self.CONSECUTIVE_FRAMES_HOLD = 13 # Frames to "hold"
 
@@ -16,7 +16,6 @@ class MouseController:
         self.closed_time_l = 0
         self.closed_time_r = 0
         self.holding_click = False
-
         self.right_triggered = False
 
         # Estimated values to be adjusted
@@ -86,20 +85,18 @@ class MouseController:
             # Resets closed time
             self.closed_time_l = 0
 
+        # Opens virtual keyboard
         if right_closed:
             self.closed_time_r += 1
-
-            if (
-                    self.closed_time_r >= self.CONSECUTIVE_FRAMES_CLICK
-                    and not self.right_triggered
-            ):
+            # Checks if it is not already open and blink was intentional
+            if self.closed_time_r >= self.CONSECUTIVE_FRAMES_CLICK and not self.right_triggered:
                 if self.keyboard is not None:
+                    # Opens Python virtual keyboard
                     self.keyboard.toggle()
-
                 print("Virtual keyboard toggled")
                 self.right_triggered = True
-
         else:
+            # Resets time and closes
             self.closed_time_r = 0
             self.right_triggered = False
 
@@ -120,11 +117,8 @@ class MouseController:
                 delta_y = 0
 
             # Verifying changes and moving the mouse
-            move_x = 0
-            move_y = 0
-
             move_x = self.calculate_speed(delta_x, self.x_dead_zone)
             move_y = self.calculate_speed(delta_y, self.y_dead_zone)
 
-            if move_x != 0 or move_y != 0:
-                pyautogui.move(round(move_x), round(move_y))
+            #if move_x != 0 or move_y != 0:
+                #pyautogui.move(round(move_x), round(move_y))

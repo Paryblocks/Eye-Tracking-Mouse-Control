@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9773109b-7942-42a7-bf2a-640c36baa8ac" name="Changes" comment="Added virtual keyboard and improved movement (needs tuning)">
-      <change afterPath="$PROJECT_DIR$/virtual_keyboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ProjetoIA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ProjetoIA.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mouse_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/mouse_control.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtual_keyboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/virtual_keyboard.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
